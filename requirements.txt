@@ -1,0 +1,15 @@
+asgiref==3.7.2
+Babel==2.14.0
+Django==4.2.7
+django-appconf==1.0.5
+django-compressor==4.4
+django-htmx==1.17.2
+django-money==3.4.1
+django-tables2==2.6.0
+django-widget-tweaks==1.5.0
+psycopg2==2.9.9
+py-moneyed==3.0
+rcssmin==1.1.1
+rjsmin==1.2.1
+sqlparse==0.4.4
+typing_extensions==4.8.0

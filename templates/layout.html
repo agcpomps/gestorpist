@@ -1,0 +1,31 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+<div class="flex h-screen rounded-md">
+    <nav class="flex flex-col w-64 bg-primary">
+      <h1 class="text-white text-2xl font-semibold px-8 py-6">GPIST-DOP</h1>
+      {% block items %}
+      {% endblock items %}
+     <div class="px-4 text-white pb-4">
+      <a href="" class="flex items-center p-2 rounded-md">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+        </svg>
+        
+        <span class="ms-2">Sair</span>
+      </a>
+     </div>
+    </nav>
+    <main class="flex-1">
+      <div class="main-container flex flex-col">
+       {% block header %}
+       {% endblock header %} 
+      
+      {% block maincontent %}
+       
+      {% endblock maincontent %}
+     </div>
+    </main>
+   </div>
+{% endblock content %}

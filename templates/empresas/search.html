@@ -1,0 +1,56 @@
+{% extends 'empresas/_layoutemp.html' %} 
+
+
+{% block maincontent %}
+<header>
+  <h1>Empresa</h1>
+  <div class="overflow-x-auto">
+    <table class="table table-xs">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nome</th>
+          <th>Gerente</th>
+          <th>Nº Telefone</th>
+          <th>Email</th>
+          <th>Morada</th>
+          <th>Província</th>
+          <th>NIF</th>
+          <th>Especialidade</th>
+          <th>Alvará</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for empresa in empresas %}
+        <tr>
+          <th>{{empresa.id}}</th>
+          <td>{{empresa.nome}}</td>
+          <td>{{empresa.gerente}}</td>
+          <td>{{empresa.telefone}}</td>
+          <td>{{empresa.email}}</td>
+          <td>{{empresa.morada}}</td>
+          <td>{{empresa.provincia}}</td>
+          <td>{{empresa.nif}}</td>
+          <td>{{empresa.especialidade}}</td>
+          <td>{{empresa.alvara.numero}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th></th>
+          <th>Nome</th>
+          <th>Gerente</th>
+          <th>Nº Telefone</th>
+          <th>Email</th>
+          <th>Morada</th>
+          <th>Província</th>
+          <th>NIF</th>
+          <th>Especialidade</th>
+          <th>Alvará</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</header>
+{% endblock maincontent %}
