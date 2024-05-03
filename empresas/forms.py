@@ -21,4 +21,12 @@ class EmpresaForm(ModelForm):
 class AlvaraForm(ModelForm):
     class Meta:
         model = Alvara
-        fields = ["numero", "emissao", "termino", "tipo", "empresa"]
+        fields = [
+            "numero",
+            "emissao",
+            "termino",
+            "classe",
+            "empresa",
+            "valor",
+            "data_pagamento",
+        ]

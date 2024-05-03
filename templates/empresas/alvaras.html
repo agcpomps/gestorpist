@@ -1,4 +1,4 @@
-{% extends 'empresas/_layoutemp.html' %} {% block header %}
+{% extends 'empresas/_layoutemp.html' %} {% load humanize %} {% block header %}
 <div class="flex justify-between items-center h-24">
   <div class="flex items-center space-x-2">
     <svg
@@ -38,8 +38,10 @@
           <th>Numero</th>
           <th>Emissão</th>
           <th>Termino</th>
-          <th>Tipo</th>
+          <th>Classe</th>
           <th>Empresa</th>
+          <th>Valor</th>
+          <th>Data de Pagamento</th>
         </tr>
       </thead>
       <tbody>
@@ -49,8 +51,10 @@
           <td>{{alvara.numero}}</td>
           <td>{{alvara.emissao}}</td>
           <td>{{alvara.termino}}</td>
-          <td>{{alvara.tipo}}</td>
+          <td>{{alvara.classe}}</td>
           <td>{{alvara.empresa}}</td>
+          <td>{{alvara.valor|intcomma}}</td>
+          <td>{{alvara.data_pagamento}}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -60,8 +64,10 @@
           <th>Numero</th>
           <th>Emissão</th>
           <th>Termino</th>
-          <th>Tipo</th>
+          <th>Classe</th>
           <th>Empresa</th>
+          <th>Valor</th>
+          <th>Data de Pagamento</th>
         </tr>
       </tfoot>
     </table>

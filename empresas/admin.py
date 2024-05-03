@@ -22,8 +22,20 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 @admin.register(Alvara)
 class AlvaraAdmin(admin.ModelAdmin):
-    list_display = ["numero", "emissao", "termino", "tipo", "empresa"]
-    list_filter = ["numero", "termino", "tipo"]
+    list_display = [
+        "numero",
+        "emissao",
+        "termino",
+        "classe",
+        "empresa",
+        "valor",
+        "data_pagamento",
+    ]
+    list_filter = [
+        "numero",
+        "termino",
+        "classe",
+    ]
     search_fields = ["numero"]
     prepopulated_fields = {"slug": ("numero",)}
     ordering = ["numero"]

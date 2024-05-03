@@ -1,39 +1,6 @@
 {% extends 'taxas/_layoutemp.html' %} 
 
 
-{% block header %}
-<div class="flex justify-between items-center h-24">
-  <div class="flex items-center space-x-2">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-      />
-    </svg>
-
-    <form action="{% url 'taxas:taxas_search' %}" method="get">
-      <input
-        type="search"
-        name="q"
-        placeholder="procure..."
-        class="input w-full max-w-xs border-dashed border-b-2 border-primary"
-      />
-    </form>
-  </div>
-  <a href="{% url 'taxas:criarlicenca' %}" class="btn btn-primary text-white"
-    >+ Entre os dados</a
-  >
-</div>
-{% endblock header %} 
-
 {% block maincontent %}
 <header>
   <h1>title</h1>

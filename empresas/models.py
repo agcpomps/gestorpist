@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from django.utils import timezone
 
 
 class Empresa(models.Model):
@@ -31,11 +32,21 @@ class Empresa(models.Model):
 
 
 class Alvara(models.Model):
+    class ClasseChoices(models.TextChoices):
+        PRIMEIRA = "Primeira"
+        SEGUNDA = "Segunda"
+        TERCEIRA = "Terceira"
+        QUARTA = "Quarta"
+
     numero = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200)
     emissao = models.DateField()
     termino = models.DateField()
-    tipo = models.IntegerField()
+    classe = models.CharField(
+        max_length=8, choices=ClasseChoices.choices, default=ClasseChoices.QUARTA
+    )
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data_pagamento = models.DateField()
     empresa = models.OneToOneField(
         Empresa, on_delete=models.CASCADE, related_name="alvara"
     )

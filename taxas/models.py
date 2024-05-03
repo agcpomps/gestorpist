@@ -3,17 +3,10 @@ from django.db import models
 
 class Contribuinte(models.Model):
     nome = models.CharField(max_length=200)
-    nif = models.CharField(max_length=10, unique=True)
+    nif = models.CharField(max_length=15, unique=True)
     morada = models.CharField(max_length=200, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     telefone = models.CharField(max_length=13, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.nome
-
-
-class Benificiario(models.Model):
-    nome = models.CharField(max_length=200, default="GPIST")
 
     def __str__(self) -> str:
         return self.nome
@@ -31,9 +24,7 @@ class Licenca(models.Model):
     contribuinte = models.ForeignKey(
         Contribuinte, on_delete=models.CASCADE, related_name="licencas_pagas"
     )
-    benificiario = models.ForeignKey(
-        Benificiario, on_delete=models.CASCADE, related_name="licencas_recebidas"
-    )
+    benificiario = models.CharField(max_length=100, default="GPIST")
     potencia = models.FloatField(null=True, blank=True)
     distincao = models.CharField(max_length=2, choices=Distincao.choices)
 
