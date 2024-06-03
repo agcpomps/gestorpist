@@ -1,6 +1,13 @@
 from django.urls import path
 
-from .views import empresas, alvara, criar_empresa, criar_alvara, search_empresa
+from .views import (
+    empresas,
+    alvara,
+    criar_empresa,
+    criar_alvara,
+    search_empresa,
+    dashboard,
+)
 
 app_name = "empresas"
 
@@ -10,5 +17,6 @@ urlpatterns = [
     path("alvaras/", alvara, name="alvaras"),
     path("criar/", criar_empresa, name="criar"),
     path("alvaras/criar/", criar_alvara, name="alvaracriar"),
+    path("dashboard/", dashboard, name="dashboard"),
     path("search/", search_empresa, name="search_empresa"),
 ]

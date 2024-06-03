@@ -6,6 +6,7 @@ from .views import (
     criar_contribuinte,
     contribuintes_list,
     search_pagamentos,
+    dashboard,
 )
 
 app_name = "gupagamentos"
@@ -15,5 +16,6 @@ urlpatterns = [
     path("taxa/", criar_pagamento, name="criar"),
     path("contribuintes/", contribuintes_list, name="contribuintes"),
     path("criarcontribuinte/", criar_contribuinte, name="criarcont"),
+    path("dashboard/", dashboard, name="dashboard"),
     path("search/", search_pagamentos, name="search_pagamentos"),
 ]

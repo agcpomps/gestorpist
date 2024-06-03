@@ -6,6 +6,7 @@ from .views import (
     contribuinte_list,
     criar_contribuinte,
     criar_licenca,
+    dashboard,
     search,
 )
 
@@ -16,5 +17,6 @@ urlpatterns = [
     path("criar", criar_licenca, name="criarlicenca"),
     path("contribuintes/", contribuinte_list, name="contribuintes"),
     path("contribuintes/criar", criar_contribuinte, name="criarcont"),
+    path("dashboard/", dashboard, name="dashboard"),
     path("search/", search, name="taxas_search"),
 ]

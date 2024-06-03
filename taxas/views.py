@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponseRedirect
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 
 from .models import Licenca, Contribuinte
@@ -41,6 +41,19 @@ def criar_contribuinte(request: HttpRequest):
         form = ContribuinteForm()
 
     return render(request, "taxas/criarcontribuintes.html", {"form": form})
+
+
+def dashboard(request: HttpRequest):
+    total_contribuintes = Contribuinte.objects.count()
+    total_licencas = Licenca.objects.count()
+    licenca_valor = Licenca.objects.aggregate(total=Sum("valor"))
+    licenca_valor_total = licenca_valor["total"]
+    context = {
+        "total_contribuintes": total_contribuintes,
+        "total_licencas": total_licencas,
+        "licenca_valor_total": licenca_valor_total,
+    }
+    return render(request, "taxas/dashboard.html", context=context)
 
 
 def search(request: HttpRequest):

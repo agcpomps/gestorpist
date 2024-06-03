@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpRequest
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render
 
 from .models import Taxa, Contribuinte
@@ -30,7 +30,7 @@ def criar_pagamento(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/gupagamentos/contribuintes")
+            return HttpResponseRedirect("/gupagamentos")
     else:
         form = TaxaForm()
 
@@ -43,11 +43,28 @@ def criar_contribuinte(request):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/gupagamentos/")
+            return HttpResponseRedirect("/gupagamentos/contribuintes")
     else:
         form = ContribuinteForm()
 
     return render(request, "gupagamentos/criarcontribuinte.html", {"form": form})
+
+
+def dashboard(request: HttpRequest):
+    total_contribuintes = Contribuinte.objects.count()
+    total_taxas = Taxa.objects.count()
+    taxa_total = Taxa.objects.aggregate(total=Sum("valor_pago"))
+    taxa_total_valor = taxa_total["total"]
+
+    return render(
+        request,
+        "gupagamentos/dashboard.html",
+        {
+            "total_contribuintes": total_contribuintes,
+            "total_taxas": total_taxas,
+            "taxa_total_valor": taxa_total_valor,
+        },
+    )
 
 
 def search_pagamentos(request: HttpRequest):

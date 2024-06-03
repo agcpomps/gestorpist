@@ -1,6 +1,4 @@
-{% extends "layout.html" %} 
-
-{% block items %}
+{% extends "layout.html" %} {% block items %}
 <ul class="flex flex-col space-y-6 px-4 text-white mt-4 flex-1 font-medium">
   <li class="">
     <a
@@ -49,7 +47,10 @@
     </a>
   </li>
   <li>
-    <a href="" class="flex items-center p-2 rounded-md hover:bg-indigo-500">
+    <a
+      href="{% url 'taxas:dashboard' %}"
+      class="flex items-center p-2 rounded-md hover:bg-indigo-500"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"

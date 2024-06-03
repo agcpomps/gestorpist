@@ -1,0 +1,36 @@
+{% extends 'taxas/_layoutemp.html' %} 
+{% load humanize %}
+
+{% block header %}
+
+
+<h1 class="text-4xl font-semibold my-8">DCIU estatística</h1>
+<div class="grid grid-cols-3 gap-2 ">
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+     <h2 class="text-center">Total Contribuintes</h2>
+      <p class="font-bold text-6xl text-center">{{total_contribuintes}}</p>
+    </div>
+   
+  </div>
+
+  <div class="card  bg-base-100 shadow-xl">
+    <div class="card-body">
+     <h2 class="text-center">Valor Total alvaras</h2>
+     <p class="font-bold text-6xl text-center">{{licenca_valor_total|intcomma}}</p>
+    </div>
+   
+  </div>
+
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body">
+     <h2 class="text-center">Total Taxas</h2>
+      <p class="font-bold text-6xl text-center">{{total_licencas}}</p>
+    </div>
+   
+  </div>
+
+</div>
+
+</div>
+{% endblock header %} 

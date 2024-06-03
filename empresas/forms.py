@@ -1,6 +1,11 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, DateInput
 
 from .models import Empresa, Alvara
+
+
+class DateInput(DateInput):
+    input_type = "date"
+    format = ("%d-%m-%Y",)
 
 
 class EmpresaForm(ModelForm):
@@ -30,3 +35,9 @@ class AlvaraForm(ModelForm):
             "valor",
             "data_pagamento",
         ]
+
+        widgets = {
+            "emissao": DateInput(),
+            "termino": DateInput(),
+            "data_pagamento": DateInput(),
+        }

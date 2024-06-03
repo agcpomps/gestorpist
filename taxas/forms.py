@@ -1,7 +1,12 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, DateInput
 
 
 from .models import Contribuinte, Licenca
+
+
+class DateInput(DateInput):
+    input_type = "date"
+    format = ("%d-%m-%Y",)
 
 
 class ContribuinteForm(ModelForm):
@@ -23,3 +28,5 @@ class LicencaForm(ModelForm):
             "potencia",
             "distincao",
         ]
+
+        widgets = {"data_pagamento": DateInput()}
