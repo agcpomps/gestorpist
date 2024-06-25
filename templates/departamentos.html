@@ -1,0 +1,54 @@
+{% extends '_base.html' %}
+
+
+
+{% block content %}
+    <div class="container mx-auto">
+        <section class="flex items-center justify-center flex-col h-screen">
+            <h1 class="mb-8 font-semibold text-5xl">Departamentos</h1>
+            <div class="grid grid-cols-4 gap-2 text-white">
+                <div class="card bg-primary shadow-xl">
+                    <div class="card-body">
+                      <h2 class="card-title">Departamento De Obras Públicas</h2>
+                      <p>Cadstro de alvarás, Empresas e dados estatistícos</p>
+                      <div class="card-actions justify-end">
+                        <a href="{% url 'empresas:empresas' %}" class="btn btn-white text-primary">Entre</a>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="card bg-primary
+                  shadow-xl">
+                    <div class="card-body">
+                      <h2 class="card-title">Departamento de Gestão Urbanistica</h2>
+                      <p>Cadastro e Consultas</p>
+                      <div class="card-actions justify-end">
+                        <a href="{% url 'gupagamentos:taxas' %}" class="btn btn-white text-primary">Entre</a>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="card bg-primary shadow-xl">
+                    <div class="card-body">
+                      <h2 class="card-title">Departamento de Conservação das Infraestruturas Urbanas</h2>
+                      <p>Cadastro de Grupos Geradores, Postos de Transformação e Consultas</p>
+                      <div class="card-actions justify-end">
+                        <a href="{% url 'taxas:licenca' %}" class="btn btn-white text-primary">Entre</a>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="card bg-primary shadow-xl">
+                    <div class="card-body">
+                      <h2 class="card-title">Gestão de Recursos Humanos</h2>
+                      <p>Cadastro de Funcionários e consultas att: em construção</p>
+                      <div class="card-actions justify-end">
+                        <button class="btn btn-white text-primary" disabled>Entre</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
+    
