@@ -1,11 +1,12 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 
 from .models import Alvara, Empresa, Documento
 
 
 @admin.register(Empresa)
-class EmpresaAdmin(admin.ModelAdmin):
+class EmpresaAdmin(ModelAdmin):
     list_display = [
         "nome",
         "telefone",
@@ -21,7 +22,7 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 
 @admin.register(Alvara)
-class AlvaraAdmin(admin.ModelAdmin):
+class AlvaraAdmin(ModelAdmin):
     list_display = [
         "numero",
         "emissao",
@@ -42,6 +43,6 @@ class AlvaraAdmin(admin.ModelAdmin):
 
 
 @admin.register(Documento)
-class DocumentoAdmin(admin.ModelAdmin):
+class DocumentoAdmin(ModelAdmin):
     list_display = ["documento", "descricao"]
     search_fields = ["documento", "descricao"]

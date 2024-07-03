@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.db.models import Q, Sum, Avg
-from django.http import HttpResponseRedirect, HttpRequest
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
+
+import pandas as pd
 
 from .models import Empresa, Alvara
 from .forms import EmpresaForm, AlvaraForm
@@ -72,4 +74,23 @@ def dashboard(request: HttpRequest):
     )
 
 
+def export_to_excel(request: HttpRequest):
+    alvaras = Alvara.objects.all()
+
+    data = list(alvaras.values())
+    df = pd.DataFrame(data)
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+    response["Content-Disposition"] = "attachment; filename=data.xlsx"
+
+    with pd.ExcelWriter(response, engine="xlsxwriter") as writer:
+        df.to_excel(writer, index=False, sheet_name="alvaras")
+
+    return response
+
+
 # criar com htmx o empresas a um mês do termino
+# criar o filtro por data ano e dar o resultado total de cada ano
