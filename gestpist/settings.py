@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "pages.apps.PagesConfig",
     "taxas.apps.TaxasConfig",
     "gupagamento.apps.GupagamentoConfig",
+    "ticket.apps.TicketConfig",
 ]
 
 MIDDLEWARE = [
