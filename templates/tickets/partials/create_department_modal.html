@@ -1,0 +1,31 @@
+{% load widget_tweaks %}
+
+
+<div class="modal-content bg-slate-50 my-16 mx-auto p-4 border-primary w-96">
+  <span
+    class="close-button float-right text-lg font-bold cursor-pointer"
+    @click="showModal = false"
+    >&times;</span
+  >
+  <h2>Criar Departamento</h2>
+  <form
+    hx-post="{% url 'ticket:create_department' %}"
+    hx-target="#department-modal"
+    hx-swap="innerHTML"
+  >
+    {% csrf_token %} 
+     {% for field in form_department.visible_fields %}
+       <div class="form-control">
+        <label for="" class="label">
+            <span class="label-text">{{field.label}}</span>
+         </label>
+         {{ field|add_class:"input input-bordered"}}
+         {% for error in field.errors %}
+           <span class="text-error">{{error}}</span>
+         {% endfor %}
+       </div>
+     {% endfor %}
+    <button class="btn btn-primary" type="submit">Criar departamento</button>
+  </form>
+  <div id="department-created"></div>
+</div>

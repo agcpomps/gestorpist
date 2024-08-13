@@ -1,0 +1,50 @@
+{% extends 'tickets/_layoutemp.html' %}
+
+{% load widget_tweaks %}
+
+
+{% block maincontent %}
+   <h2 class="text-3xl font-bold">Cria um Ticket</h2> 
+<div x-data="{ showModal: false}">
+  <form method="post">
+    {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+    {% for field in form.visible_fields %}
+      <div class="form-control">
+       
+       {% if  field.label == "Departamento" %}
+       <label for="" class="label">
+           <span class="label-text">{{field.label}}</span>
+           <button  hx-get="{% url 'ticket:create_department' %}" type="button" @click="showModal = true" class="btn btn-primary" hx-target="#department-modal">
+                 criar
+           </button>
+        </label>
+        {% else %}
+        <label for="" class="label">
+           <span class="label-text">{{field.label}}</span>
+        </label>
+       {% endif %}
+           
+        
+        {{ field|add_class:"input input-bordered"}}
+        {% for error in field.errors %}
+          <span class="text-error">{{error}}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <div class="form-control mt-4">
+      <button type="submit" class="btn btn-primary text-green-300">
+        Guardar
+      </button>
+    </div>
+  </form>  
+
+  <div x-show="showModal" id="department-modal" class="fixed z-10 left-0 top-0 w-full h-full overflow-auto bg-blend-darken">
+   {% include 'tickets/partials/create_department_modal.html' %}
+  </div>
+</div>
+   
+{% endblock maincontent %}
+    

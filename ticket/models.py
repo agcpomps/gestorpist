@@ -10,7 +10,7 @@ class Department(models.Model):
         return self.name
 
 
-class Ticketet(models.Model):
+class Ticket(models.Model):
     class Priority(models.TextChoices):
         BAIXA = "B", "Baixa"
         MEDIA = "M", "Media"
