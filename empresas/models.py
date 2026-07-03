@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 class Empresa(models.Model):
@@ -22,6 +23,12 @@ class Empresa(models.Model):
     created_at = models.DateField(auto_now_add=True)
     especialidade = models.CharField(
         max_length=2, choices=Especialidade.choices, default=Especialidade.CONSTRUCAO
+    )
+    criado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="empresas_criadas"
     )
 
     class Meta:
@@ -51,6 +58,13 @@ class Alvara(models.Model):
         Empresa, on_delete=models.CASCADE, related_name="alvara"
     )
 
+    emitido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     def __str__(self) -> str:
         return f"{self.numero} | {self.empresa}"
 
@@ -60,6 +74,12 @@ class Documento(models.Model):
     documento = models.FileField(upload_to="documentos/", blank=True, null=True)
     empresa = models.ForeignKey(
         Empresa, on_delete=models.CASCADE, related_name="documentos"
+    )
+    enviado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True, 
+        blank=True
     )
 
     def __str__(self) -> str:

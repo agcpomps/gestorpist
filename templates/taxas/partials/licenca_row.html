@@ -1,0 +1,30 @@
+{% load money %}
+<tr id="row-{{ licenca.id }}">
+  <td>{{ licenca.id }}</td>
+  <td>{{ licenca.numero }}</td>
+  <td class="font-medium">{{ licenca.contribuinte }}</td>
+  <td class="whitespace-nowrap">{{ licenca.valor|kwanza }}</td>
+  <td class="whitespace-nowrap">{{ licenca.data_pagamento|date:"d/m/Y" }}</td>
+  <td>{{ licenca.benificiario }}</td>
+  <td>{{ licenca.potencia }}</td>
+  <td>{{ licenca.distincao }}</td>
+  <td class="text-right whitespace-nowrap">
+    <button
+      class="btn btn-sm btn-ghost text-warning"
+      hx-get="{% url 'taxas:editar_licenca' licenca.id %}"
+      hx-target="#row-{{ licenca.id }}"
+      hx-swap="outerHTML"
+    >
+      Editar
+    </button>
+    <button
+      class="btn btn-sm btn-ghost text-error"
+      hx-delete="{% url 'taxas:delete_licenca' licenca.id %}"
+      hx-confirm="Tem a certeza que deseja eliminar esta licença?"
+      hx-target="#row-{{ licenca.id }}"
+      hx-swap="outerHTML"
+    >
+      Eliminar
+    </button>
+  </td>
+</tr>

@@ -1,31 +1,33 @@
 {% load widget_tweaks %}
 
+<div class="modal-box bg-base-100 mt-16 w-full max-w-md">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold">Criar Departamento</h3>
+    <button type="button" class="btn btn-sm btn-circle btn-ghost" @click="showModal = false" aria-label="Fechar">✕</button>
+  </div>
 
-<div class="modal-content bg-slate-50 my-16 mx-auto p-4 border-primary w-96">
-  <span
-    class="close-button float-right text-lg font-bold cursor-pointer"
-    @click="showModal = false"
-    >&times;</span
-  >
-  <h2>Criar Departamento</h2>
-  <form
-    hx-post="{% url 'ticket:create_department' %}"
-    hx-target="#department-modal"
-    hx-swap="innerHTML"
-  >
-    {% csrf_token %} 
-     {% for field in form_department.visible_fields %}
-       <div class="form-control">
-        <label for="" class="label">
-            <span class="label-text">{{field.label}}</span>
-         </label>
-         {{ field|add_class:"input input-bordered"}}
-         {% for error in field.errors %}
-           <span class="text-error">{{error}}</span>
-         {% endfor %}
-       </div>
-     {% endfor %}
-    <button class="btn btn-primary" type="submit">Criar departamento</button>
+  <form hx-post="{% url 'ticket:create_department' %}" hx-target="#department-modal" hx-swap="innerHTML"
+        class="flex flex-col gap-3">
+    {% csrf_token %}
+    {% for field in form_department.visible_fields %}
+      {% with wt=field|widget_type %}
+      <div class="w-full">
+        <label class="block text-sm font-medium mb-1.5" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% if wt == 'textarea' %}
+          {{ field|add_class:"textarea w-full" }}
+        {% else %}
+          {{ field|add_class:"input w-full" }}
+        {% endif %}
+        {% for error in field.errors %}<p class="text-error text-sm mt-1">{{ error }}</p>{% endfor %}
+      </div>
+      {% endwith %}
+    {% endfor %}
+
+    <div class="flex justify-end gap-2 mt-2">
+      <button type="button" class="btn btn-ghost" @click="showModal = false">Cancelar</button>
+      <button class="btn btn-primary" type="submit">Criar departamento</button>
+    </div>
   </form>
+
   <div id="department-created"></div>
 </div>

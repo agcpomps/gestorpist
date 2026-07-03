@@ -1,0 +1,20 @@
+{% load widget_tweaks %}
+{% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}
+{% for field in form.visible_fields %}
+  {% with wt=field|widget_type %}
+  <div class="w-full {% if wt == 'textarea' %}sm:col-span-2{% endif %}">
+    <label class="block text-sm font-medium mb-1.5" for="{{ field.id_for_label }}">
+      {{ field.label }}{% if field.field.required %} <span class="text-error">*</span>{% endif %}
+    </label>
+    {% if wt == 'select' or wt == 'selectmultiple' %}
+      {{ field|add_class:"select w-full" }}
+    {% elif wt == 'textarea' %}
+      {{ field|add_class:"textarea w-full" }}
+    {% else %}
+      {{ field|add_class:"input w-full" }}
+    {% endif %}
+    {% if field.help_text %}<p class="text-xs text-base-content/50 mt-1">{{ field.help_text }}</p>{% endif %}
+    {% for error in field.errors %}<p class="text-error text-sm mt-1">{{ error }}</p>{% endfor %}
+  </div>
+  {% endwith %}
+{% endfor %}

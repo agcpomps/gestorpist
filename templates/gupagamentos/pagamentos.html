@@ -1,82 +1,59 @@
-{% extends 'gupagamentos/_layoutemp.html' %} 
-{% block header %}
-<div class="flex justify-between items-center h-24">
-  <div class="flex items-center space-x-2">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-      />
-    </svg>
+{% extends 'gupagamentos/_layoutemp.html' %}
 
-    <form action="{% url 'gupagamentos:search_pagamentos' %}" method="get">
-      <input
-        type="search"
-        name="q"
-        placeholder="procure..."
-        class="input w-full max-w-xs border-dashed border-b-2 border-primary"
-      />
-    </form>
+{% block header %}
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Pagamentos</h1>
+    <p class="text-base-content/60">Controle de pagamentos da Gestão Urbanística</p>
   </div>
-  <a href="{% url 'gupagamentos:criar' %}" class="btn btn-primary text-white"
-    >+ Entre os dados</a
-  >
+  <div class="flex items-center gap-3">
+    <form action="{% url 'gupagamentos:search_pagamentos' %}" method="get">
+      <label class="input input-sm w-48 sm:w-64">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-50" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input type="search" name="q" placeholder="Procurar..." class="grow" />
+      </label>
+    </form>
+    <a href="{% url 'gupagamentos:criar' %}" class="btn btn-primary">+ Novo pagamento</a>
+  </div>
 </div>
 {% endblock header %}
 
-
 {% block maincontent %}
-
-<header>
-  <h1>title</h1>
-  <div class="overflow-x-auto">
-    <table class="table table-xs">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Contribuiente</th>
-          <th>Nº de Titulo</th>
-          <th>Localização</th>
-          <th>Valor de Contrato</th>
-          <th>Valor Pago</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for taxa in taxas %}
-        <tr>
-          <th>{{taxa.id}}</th>
-          <th>{{taxa.contribuinte}}</th>
-          <td>{{taxa.titulo}}</td>
-          <td>
-            {{taxa.contribuinte.morada}} - {{pagamento.contribuinte.municipio}}
-          </td>
-          <td>{{taxa.valor_contrato}}</td>
-          <td>{{taxa.valor_pago}}</td>
-          <td>{{taxa.data_pagamento}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Contribuiente</th>
-          <th>Nº de Titulo</th>
-          <th>Localização</th>
-          <th>Valor de Contrato</th>
-          <th>Valor Pago</th>
-          <th>Data</th>
-        </tr>
-      </tfoot>
-    </table>
+{% if messages %}
+<div class="mb-4 space-y-2">
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %}">
+    <span>{{ message }}</span>
   </div>
-</header>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+  <table class="table table-zebra table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Contribuinte</th>
+        <th>Nº de Título</th>
+        <th>Localização</th>
+        <th>Valor de Contrato</th>
+        <th>Valor Pago</th>
+        <th>Data</th>
+        <th class="text-right">Acções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for pagamento in taxas %}
+      {% include 'gupagamentos/partials/pagamento_row.html' %}
+      {% empty %}
+      <tr>
+        <td colspan="8" class="text-center text-base-content/60 py-8">Nenhum pagamento registado.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock maincontent %}

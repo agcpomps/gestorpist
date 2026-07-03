@@ -1,0 +1,29 @@
+{% load widget_tweaks %}
+
+<tr id="row-{{ licenca.id }}">
+  <td colspan="9" class="bg-base-200/60">
+    <form hx-post="{% url 'taxas:editar_licenca' licenca.id %}"
+          hx-target="#row-{{ licenca.id }}"
+          hx-swap="outerHTML"
+          class="p-2">
+      {% csrf_token %}
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        {% include 'partials/form_fields.html' %}
+      </div>
+
+      <div class="flex justify-end gap-2 mt-4">
+        <button
+          type="button"
+          class="btn btn-sm btn-ghost"
+          hx-get="{% url 'taxas:editar_licenca' licenca.id %}?cancel=1"
+          hx-target="#row-{{ licenca.id }}"
+          hx-swap="outerHTML"
+        >
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+      </div>
+    </form>
+  </td>
+</tr>

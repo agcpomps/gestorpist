@@ -8,6 +8,7 @@ from .views import (
     search_empresa,
     dashboard,
     export_to_excel,
+    filtrar_alvaras
 )
 
 app_name = "empresas"
@@ -16,6 +17,7 @@ app_name = "empresas"
 urlpatterns = [
     path("", empresas, name="empresas"),
     path("alvaras/", alvara, name="alvaras"),
+    path("alvaras/filtrar", filtrar_alvaras, name="filtrar_alvaras"),
     path("criar/", criar_empresa, name="criar"),
     path("alvaras/criar/", criar_alvara, name="alvaracriar"),
     path("dashboard/", dashboard, name="dashboard"),

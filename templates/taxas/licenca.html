@@ -1,83 +1,50 @@
-{% extends 'taxas/_layoutemp.html' %} 
-
+{% extends 'taxas/_layoutemp.html' %}
 
 {% block header %}
-<div class="flex justify-between items-center h-24">
-  <div class="flex items-center space-x-2">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-      />
-    </svg>
-
-    <form action="{% url 'taxas:taxas_search' %}" method="get">
-      <input
-        type="search"
-        name="q"
-        placeholder="procure..."
-        class="input w-full max-w-xs border-dashed border-b-2 border-primary"
-      />
-    </form>
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Licenças</h1>
+    <p class="text-base-content/60">Licenças emitidas pela Conservação das Infraestruturas</p>
   </div>
-  <a href="{% url 'taxas:criarlicenca' %}" class="btn btn-primary text-white"
-    >+ Entre os dados</a
-  >
+  <div class="flex items-center gap-3">
+    <form action="{% url 'taxas:taxas_search' %}" method="get">
+      <label class="input input-sm w-48 sm:w-64">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-50" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input type="search" name="q" placeholder="Nº, contribuinte, beneficiário..." class="grow" />
+      </label>
+    </form>
+    <a href="{% url 'taxas:criarlicenca' %}" class="btn btn-primary">+ Nova licença</a>
+  </div>
 </div>
-{% endblock header %} 
+{% endblock header %}
 
 {% block maincontent %}
-<header>
-  <h1>title</h1>
-  <div class="overflow-x-auto">
-    <table class="table table-xs">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Numero</th>
-          <th>Contribuinte</th>
-          <th>Valor</th>
-          <th>Data de Pagamento</th>
-          <th>Benificiario</th>
-          <th>Potência</th>
-          <th>Distinção</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for licenca in licencas %}
-        <tr>
-          <th>{{licenca.id}}</th>
-          <td>{{licenca.numero}}</td>
-          <td>{{licenca.contribuinte}}</td>
-          <td>{{licenca.valor}}</td>
-          <td>{{licenca.data_pagamento}}</td>
-          <td>{{licenca.benificiario}}</td>
-          <td>{{licenca.potencia}}</td>
-          <td>{{licenca.distincao}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Numero</th>
-          <th>Contribuinte</th>
-          <th>Valor</th>
-          <th>Data de Pagamento</th>
-          <th>Benificiario</th>
-          <th>Potência</th>
-          <th>Distinção</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</header>
+<div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+  <table class="table table-zebra table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Número</th>
+        <th>Contribuinte</th>
+        <th>Valor</th>
+        <th>Data de Pagamento</th>
+        <th>Beneficiário</th>
+        <th>Potência</th>
+        <th>Distinção</th>
+        <th class="text-right">Acções</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for licenca in licencas %}
+      {% include 'taxas/partials/licenca_row.html' %}
+      {% empty %}
+      <tr>
+        <td colspan="9" class="text-center text-base-content/60 py-8">Nenhuma licença registada.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock maincontent %}

@@ -1,0 +1,125 @@
+{% extends 'tickets/_layoutemp.html' %}
+{% load widget_tweaks %}
+
+{% block header %}
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <h1 class="text-2xl font-semibold">#{{ ticket.id }} — {{ ticket.title }}</h1>
+      <span class="badge
+        {% if ticket.status == 'R' %}badge-success
+        {% elif ticket.status == 'P' %}badge-primary
+        {% elif ticket.status == 'F' %}badge-ghost
+        {% else %}badge-warning{% endif %}">
+        {{ ticket.get_status_display }}
+      </span>
+      <span class="badge
+        {% if ticket.priority == 'U' %}badge-error
+        {% elif ticket.priority == 'A' %}badge-warning
+        {% elif ticket.priority == 'M' %}badge-info
+        {% else %}badge-ghost{% endif %}">
+        {{ ticket.get_priority_display }}
+      </span>
+    </div>
+    <p class="text-base-content/60 mt-1">
+      {{ ticket.department }} · aberto por {{ ticket.user }} em {{ ticket.created_at|date:"d/m/Y H:i" }}
+      · última actualização {{ ticket.updated_at|date:"d/m/Y H:i" }}
+    </p>
+  </div>
+  <a href="{% url 'ticket:ticketall' %}" class="btn btn-ghost">← Voltar aos tickets</a>
+</div>
+{% endblock header %}
+
+{% block maincontent %}
+{% if messages %}
+<div class="mb-4 space-y-2">
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %}">
+    <span>{{ message }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+  <!-- Descrição + comentários -->
+  <div class="lg:col-span-2 flex flex-col gap-6">
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title text-base">Descrição</h2>
+        <p class="whitespace-pre-line text-base-content/80">{{ ticket.description }}</p>
+      </div>
+    </div>
+
+    <div class="card bg-base-100 border border-base-300 shadow-sm">
+      <div class="card-body gap-4">
+        <h2 class="card-title text-base">Comentários <span class="badge badge-ghost badge-sm">{{ comments|length }}</span></h2>
+
+        {% for comment in comments %}
+        <div class="border-l-2 border-base-300 pl-4">
+          <p class="text-sm">
+            <span class="font-medium">{{ comment.author }}</span>
+            <span class="text-base-content/50">· {{ comment.created_at|date:"d/m/Y H:i" }}</span>
+          </p>
+          <p class="whitespace-pre-line text-base-content/80 mt-1">{{ comment.body }}</p>
+        </div>
+        {% empty %}
+        <p class="text-base-content/50 text-sm">Ainda sem comentários.</p>
+        {% endfor %}
+
+        <form method="post" class="mt-2">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="comment">
+          {{ comment_form.body|add_class:"textarea w-full" }}
+          {% for error in comment_form.body.errors %}<p class="text-error text-sm mt-1">{{ error }}</p>{% endfor %}
+          <div class="flex justify-end mt-2">
+            <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gestão -->
+  {% if can_manage %}
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body gap-3">
+      <h2 class="card-title text-base">Gestão do ticket</h2>
+      <form method="post" class="flex flex-col gap-3">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update">
+
+        <div>
+          <label class="block text-sm font-medium mb-1.5" for="{{ update_form.status.id_for_label }}">Estado</label>
+          {{ update_form.status|add_class:"select w-full" }}
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5" for="{{ update_form.priority.id_for_label }}">Prioridade</label>
+          {{ update_form.priority|add_class:"select w-full" }}
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1.5" for="{{ update_form.assigned_to.id_for_label }}">Atribuído a</label>
+          {{ update_form.assigned_to|add_class:"select w-full" }}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-1">Guardar alterações</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body gap-2">
+      <h2 class="card-title text-base">Gestão do ticket</h2>
+      <p class="text-sm text-base-content/60">
+        Este ticket é gerido pelo departamento <span class="font-medium">{{ ticket.department }}</span>.
+      </p>
+      {% if ticket.assigned_to %}
+      <p class="text-sm text-base-content/60">Atribuído a <span class="font-medium">{{ ticket.assigned_to }}</span>.</p>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock maincontent %}

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django_htmx",
     "django_tables2",
     "djmoney",
+    'django_cotton',
     # local
     "empresas.apps.EmpresasConfig",
     "accounts.apps.AccountsConfig",
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     "taxas.apps.TaxasConfig",
     "gupagamento.apps.GupagamentoConfig",
     "ticket.apps.TicketConfig",
+    "projectos.apps.ProjectosConfig",
 ]
 
 MIDDLEWARE = [
@@ -153,3 +155,5 @@ STATICFILES_FINDERS = (
 )
 
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+LOGIN_URL = "pages:home_login"

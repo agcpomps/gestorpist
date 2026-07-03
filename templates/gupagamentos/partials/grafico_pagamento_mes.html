@@ -1,0 +1,54 @@
+{% if data == "[]" %}
+  <div class="flex items-center justify-center text-base-content/60 py-12">
+    Sem dados de pagamentos para apresentar.
+  </div>
+{% else %}
+<div class="relative h-72 w-full">
+  <canvas id="graficoPagamentoMes"></canvas>
+</div>
+
+<script>
+  (function () {
+    const ctx = document.getElementById("graficoPagamentoMes");
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+          label: "Pagamentos por mês (AOA)",
+          data: {{ data|safe }},
+          borderColor: "rgba(79, 70, 229, 1)",
+          backgroundColor: "rgba(79, 70, 229, 0.15)",
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: "rgba(79, 70, 229, 1)",
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => "Kz " + c.parsed.y.toLocaleString("pt-AO", { minimumFractionDigits: 2 }),
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: (v) => "Kz " + Number(v).toLocaleString("pt-AO"),
+            }
+          }
+        }
+      }
+    });
+  })();
+</script>
+{% endif %}

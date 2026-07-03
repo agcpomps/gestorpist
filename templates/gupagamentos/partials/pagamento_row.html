@@ -1,0 +1,28 @@
+<tr id="row-{{ pagamento.id }}">
+  <td>{{ pagamento.id }}</td>
+  <td class="font-medium">{{ pagamento.contribuinte }}</td>
+  <td>{{ pagamento.titulo }}</td>
+  <td>{{ pagamento.contribuinte.morada }} - {{ pagamento.contribuinte.municipio }}</td>
+  <td>{{ pagamento.valor_contrato }}</td>
+  <td>{{ pagamento.valor_pago }}</td>
+  <td class="whitespace-nowrap">{{ pagamento.data_pagamento|date:"d/m/Y" }}</td>
+  <td class="text-right whitespace-nowrap">
+    <button
+      class="btn btn-sm btn-ghost text-warning"
+      hx-get="{% url 'gupagamentos:editar_pagamento' pagamento.id %}"
+      hx-target="#row-{{ pagamento.id }}"
+      hx-swap="outerHTML"
+    >
+      Editar
+    </button>
+    <button
+      class="btn btn-sm btn-ghost text-error"
+      hx-delete="{% url 'gupagamentos:delete_pagamento' pagamento.id %}"
+      hx-confirm="Tem a certeza que deseja eliminar este pagamento?"
+      hx-target="body"
+      hx-push-url="true"
+    >
+      Eliminar
+    </button>
+  </td>
+</tr>

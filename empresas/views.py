@@ -23,6 +23,17 @@ def alvara(request):
     return render(request, "empresas/alvaras.html", {"alvaras": alvaras})
 
 
+
+def filtrar_alvaras(request: HttpRequest):
+    classe = request.GET.get("classe")
+    print(classe)
+    if classe:
+        alvaras = Alvara.objects.filter(classe=classe)
+    else:
+        alvaras = Alvara.objects.all()
+    return render(request, "empresas/partials/alvara_list.html", {"alvaras": alvaras})
+
+
 @login_required
 def criar_empresa(request):
     if request.method == "POST":

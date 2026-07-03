@@ -2,30 +2,53 @@
 
 
 {% block content %}
-<div class="flex h-screen rounded-md">
-    <nav class="flex flex-col w-64 bg-primary">
-      <h1 class="text-white text-2xl font-semibold px-8 py-6">GPIST-DOP</h1>
-      {% block items %}
-      {% endblock items %}
-     <div class="px-4 text-white pb-4">
-      <a href="{% url 'pages:departamentos' %}" class="flex items-center p-2 rounded-md">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+<div class="drawer lg:drawer-open">
+  <input id="nav-drawer" type="checkbox" class="drawer-toggle" />
+
+  <!-- Page content -->
+  <div class="drawer-content flex flex-col min-h-screen bg-base-200">
+    <!-- Mobile top bar (hidden on lg, where the sidebar is always open) -->
+    <div class="navbar bg-base-100 border-b border-base-300 lg:hidden sticky top-0 z-30">
+      <label for="nav-drawer" aria-label="Abrir menu" class="btn btn-square btn-ghost">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
-        
-        <span class="ms-2">Sair</span>
-      </a>
-     </div>
-    </nav>
+      </label>
+      <span class="px-2 text-lg font-semibold">GPIST-DOP</span>
+    </div>
+
     <main class="flex-1">
       <div class="main-container flex flex-col">
-       {% block header %}
-       {% endblock header %} 
-      
-      {% block maincontent %}
-       
-      {% endblock maincontent %}
-     </div>
+        {% block header %}
+        {% endblock header %}
+
+        {% block maincontent %}
+        {% endblock maincontent %}
+      </div>
     </main>
-   </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="drawer-side z-40">
+    <label for="nav-drawer" aria-label="Fechar menu" class="drawer-overlay"></label>
+    <nav class="flex flex-col w-64 min-h-full bg-primary text-primary-content">
+      <h1 class="text-2xl font-semibold px-6 py-6">GPIST-DOP</h1>
+
+      <ul class="flex flex-col gap-1 px-3 flex-1 font-medium">
+        {% block items %}
+        {% endblock items %}
+      </ul>
+
+      <div class="px-3 pb-4 pt-2 border-t border-white/15 mt-2">
+        <a href="{% url 'pages:departamentos' %}"
+           class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/10 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+          </svg>
+          <span>Sair</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
 {% endblock content %}

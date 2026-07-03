@@ -1,48 +1,30 @@
 {% extends 'gupagamentos/_layoutemp.html' %}
-{% load widget_tweaks %}
-
- 
-
 
 {% block maincontent %}
-<div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-    <!-- Modal content -->
-    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-        <!-- Modal header -->
-        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Insere os Dados do Contribuinte
-            </h3>
-           
-        </div>
-        <!-- Modal body -->
-        <form method="post">
-            {% csrf_token %}
-            <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                <div>
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nome</label>
-                    {{ form.nome|add_class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}}
-                </div>
-                <div>
-                    <label for="brand" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nif</label>
-                    {{ form.nif|add_class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}}
-                </div>
-                <div>
-                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Morada</label>
-                    {{ form.morada|add_class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}}
-                </div>
-                <div>
-                    <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Município</label>
-                    {{ form.municipio|add_class:"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"}}
-                </div>
+<div class="max-w-2xl mx-auto w-full py-6">
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body">
+      <div class="mb-3">
+        <h2 class="text-xl font-semibold">Criar Contribuinte</h2>
+        <p class="text-sm text-base-content/60">Preencha os dados abaixo para registar um novo contribuinte.</p>
+      </div>
 
-            </div>
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-                Submita
-            </button>
-        </form>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="alert alert-error mb-4">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          {% include 'partials/form_fields.html' %}
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+          <a href="{% url 'gupagamentos:contribuintes' %}" class="btn btn-ghost">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock maincontent %}

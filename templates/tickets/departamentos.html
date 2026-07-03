@@ -1,0 +1,88 @@
+{% extends 'tickets/_layoutemp.html' %}
+
+{% block header %}
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Tickets por Departamento</h1>
+    <p class="text-base-content/60">Visão dos tickets agrupados por departamento</p>
+  </div>
+  <a href="{% url 'ticket:create_ticket' %}" class="btn btn-primary text-white">+ Novo ticket</a>
+</div>
+{% endblock header %}
+
+{% block maincontent %}
+<div class="flex flex-col gap-6">
+  {% for department in departments %}
+  <section class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body gap-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="card-title text-lg">{{ department.name }}</h2>
+          {% if department.description %}
+          <p class="text-sm text-base-content/60">{{ department.description }}</p>
+          {% endif %}
+        </div>
+        <span class="badge badge-neutral">{{ department.department_tickets.count }} ticket{{ department.department_tickets.count|pluralize }}</span>
+      </div>
+
+      <div class="overflow-x-auto rounded-box border border-base-300">
+        <table class="table table-zebra table-sm">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Título</th>
+              <th>Usuário</th>
+              <th>Atribuído a</th>
+              <th>Prioridade</th>
+              <th>Estado</th>
+              <th>Criado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ticket in department.department_tickets.all %}
+            <tr>
+              <th>{{ ticket.id }}</th>
+              <td class="font-medium"><a href="{% url 'ticket:detail' ticket.id %}" class="link link-hover">{{ ticket.title }}</a></td>
+              <td>{{ ticket.user }}</td>
+              <td>{% if ticket.assigned_to %}{{ ticket.assigned_to }}{% else %}<span class="text-base-content/40">—</span>{% endif %}</td>
+              <td>
+                <span class="badge badge-sm
+                  {% if ticket.priority == 'U' %}badge-error
+                  {% elif ticket.priority == 'A' %}badge-warning
+                  {% elif ticket.priority == 'M' %}badge-info
+                  {% else %}badge-ghost{% endif %}">
+                  {{ ticket.get_priority_display }}
+                </span>
+              </td>
+              <td>
+                <span class="badge badge-sm
+                  {% if ticket.status == 'R' %}badge-success
+                  {% elif ticket.status == 'P' %}badge-primary
+                  {% elif ticket.status == 'F' %}badge-ghost
+                  {% else %}badge-warning{% endif %}">
+                  {{ ticket.get_status_display }}
+                </span>
+              </td>
+              <td class="whitespace-nowrap text-base-content/60">{{ ticket.created_at|date:"d/m/Y" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="text-center text-base-content/50 py-6">Sem tickets neste departamento.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  {% empty %}
+  <div class="flex flex-col items-center justify-center text-center rounded-box border border-dashed border-base-300 py-16 text-base-content/60">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10 mb-3 opacity-50" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75" />
+    </svg>
+    <p class="font-medium">Nenhum departamento registado.</p>
+    <p class="text-sm">Crie um departamento ao criar um ticket.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock maincontent %}

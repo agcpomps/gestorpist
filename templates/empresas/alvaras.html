@@ -1,6 +1,20 @@
-{% extends 'empresas/_layoutemp.html' %} {% load humanize %} {% block header %}
-<div class="flex justify-between items-center h-24">
-  <div class="flex items-center space-x-2">
+{% extends 'empresas/_layoutemp.html' %} 
+
+{% block header %}
+<div class="flex justify-between items-center h-24 mt-8">
+   <div>
+    <h1 class="text-2xl  font-semibold">Gestor de Alvarás</h1>
+    <p>Visualize e gerencie todos os alvarás registrados no sistema</p>
+   </div>
+  <a href="{% url 'empresas:alvaracriar' %}" class="btn btn-primary text-white"
+    >+ Entre os dados</a
+  >
+</div>
+{% endblock header %} 
+{% block maincontent %}
+
+<section class="border border-gray-300 flex items-center shadow mt-4 mb-4 p-4 rounded-2xl space-x-2">
+  <div class="flex items-center mr-8">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -20,67 +34,36 @@
       type="search"
       name=""
       id=""
-      class="input w-full max-w-xs border-dashed border-b-2 border-primary"
+      class="input w-2xl max-w-xs border-dashed border-b-2 border-gray-500"
     />
   </div>
-  <a href="{% url 'empresas:alvaracriar' %}" class="btn btn-primary text-white"
-    >+ Entre os dados</a
-  >
-</div>
-{% endblock header %} {% block maincontent %}
+
+  <select
+   name="classe" 
+   id="" 
+   class="select w-24"
+   hx-get="{% url 'empresas:filtrar_alvaras' %}"
+   hx-target="#alvara-list"
+   hx-trigger="change"
+   >
+    <option value="">Todas</option>
+    <option value="Terceira">Terceira</option>
+    <option value="Quarta">Quarta</option>
+  </select>
+</section>
 <header>
  <div class="flex justify-between items-center">
-  <h1>Lista de Alvarás por Empresas</h1>
+  <h2 class="text-xl my-4">Lista de Alvarás por Empresas</h2>
   <div>
-    <a href="{% url 'empresas:export_to_excel' %}"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 16 16" fill="currentColor" class="w-4 h-6">
+    <a class="btn bg-gray-400 text-white" href="{% url 'empresas:export_to_excel' %}"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 16 16" fill="currentColor" class="w-4 h-6">
       <path fill-rule="evenodd" d="M4 5a2 2 0 0 0-2 2v3a2 2 0 0 0 1.51 1.94l-.315 1.896A1 1 0 0 0 4.18 15h7.639a1 1 0 0 0 .986-1.164l-.316-1.897A2 2 0 0 0 14 10V7a2 2 0 0 0-2-2V2a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v3Zm1.5 0V2.5h5V5h-5Zm5.23 5.5H5.27l-.5 3h6.459l-.5-3Z" clip-rule="evenodd" />
     </svg>
     
-    excel
+    exportar
     </a>
   </div>
  </div>
-  <div class="overflow-x-auto">
-    <table class="table table-xs">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Numero</th>
-          <th>Emissão</th>
-          <th>Termino</th>
-          <th>Classe</th>
-          <th>Empresa</th>
-          <th>Valor</th>
-          <th>Data de Pagamento</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for alvara in alvaras %}
-        <tr>
-          <th>{{alvara.id}}</th>
-          <td>{{alvara.numero}}</td>
-          <td>{{alvara.emissao}}</td>
-          <td>{{alvara.termino}}</td>
-          <td>{{alvara.classe}}</td>
-          <td>{{alvara.empresa}}</td>
-          <td>{{alvara.valor|intcomma}}</td>
-          <td>{{alvara.data_pagamento}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Numero</th>
-          <th>Emissão</th>
-          <th>Termino</th>
-          <th>Classe</th>
-          <th>Empresa</th>
-          <th>Valor</th>
-          <th>Data de Pagamento</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+  <div id="alvara-list" class="overflow-x-auto">
+    {% include "empresas/partials/alvara_list.html" %}
 </header>
 {% endblock maincontent %}

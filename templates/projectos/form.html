@@ -1,0 +1,30 @@
+{% extends 'projectos/_layoutemp.html' %}
+
+{% block maincontent %}
+<div class="max-w-2xl mx-auto w-full py-6">
+  <div class="card bg-base-100 border border-base-300 shadow-sm">
+    <div class="card-body">
+      <div class="mb-3">
+        <h2 class="text-xl font-semibold">{{ titulo }}</h2>
+        <p class="text-sm text-base-content/60">Preencha os dados do projecto.</p>
+      </div>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+        <div class="alert alert-error mb-4">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          {% include 'partials/form_fields.html' %}
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+          <a href="{% url 'projectos:list' %}" class="btn btn-ghost">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock maincontent %}

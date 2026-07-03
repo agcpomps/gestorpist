@@ -1,0 +1,104 @@
+{% extends 'projectos/_layoutemp.html' %}
+
+{% block header %}
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Projectos</h1>
+    <p class="text-base-content/60">Gestão de projectos por departamento</p>
+  </div>
+  <a href="{% url 'projectos:create' %}" class="btn btn-primary">+ Novo projecto</a>
+</div>
+{% endblock header %}
+
+{% block maincontent %}
+{% if messages %}
+<div class="mb-4 space-y-2">
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %}">
+    <span>{{ message }}</span>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+  {% for project in projects %}
+  <div id="project-{{ project.id }}" class="card bg-base-100 border border-base-300 shadow-sm hover:shadow-md transition-shadow">
+    <div class="card-body gap-3">
+      <div class="flex items-start justify-between gap-2">
+        <h2 class="card-title text-base">{{ project.name }}</h2>
+        <span class="badge badge-sm whitespace-nowrap
+          {% if project.status == 'CO' %}badge-success
+          {% elif project.status == 'EC' %}badge-primary
+          {% elif project.status == 'CA' %}badge-error
+          {% elif project.status == 'PA' %}badge-warning
+          {% else %}badge-ghost{% endif %}">
+          {{ project.get_status_display }}
+        </span>
+      </div>
+
+      {% if project.description %}
+      <p class="text-sm text-base-content/70 line-clamp-2">{{ project.description }}</p>
+      {% endif %}
+
+      <div class="flex flex-wrap items-center gap-2 text-xs text-base-content/60">
+        <span class="inline-flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75" />
+          </svg>
+          {{ project.department.name }}
+        </span>
+        {% if project.end_date %}
+        <span class="inline-flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          {{ project.end_date|date:"d/m/Y" }}
+        </span>
+        {% endif %}
+      </div>
+
+      <div>
+        <div class="flex justify-between text-xs text-base-content/60 mb-1">
+          <span>Progresso</span>
+          <span>{{ project.progress }}%</span>
+        </div>
+        <progress class="progress progress-primary w-full" value="{{ project.progress }}" max="100"></progress>
+      </div>
+
+      <div class="flex items-center justify-between pt-1">
+        <span class="text-xs text-base-content/60">
+          {% if project.manager %}{{ project.manager }}{% else %}Sem responsável{% endif %}
+        </span>
+        <span class="badge badge-ghost badge-sm">{{ project.get_priority_display }}</span>
+      </div>
+
+      {% if request.user.is_staff or project.department_id == request.user.departamento_id %}
+      <div class="flex justify-end gap-1 border-t border-base-300 pt-3 mt-1">
+        <a href="{% url 'projectos:edit' project.id %}" class="btn btn-sm btn-ghost text-warning">Editar</a>
+        <button
+          class="btn btn-sm btn-ghost text-error"
+          hx-delete="{% url 'projectos:delete' project.id %}"
+          hx-confirm="Tem a certeza que deseja eliminar o projecto “{{ project.name }}”?"
+          hx-target="#project-{{ project.id }}"
+          hx-swap="outerHTML"
+        >
+          Eliminar
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div class="md:col-span-2 xl:col-span-3">
+    <div class="flex flex-col items-center justify-center text-center rounded-box border border-dashed border-base-300 py-16 text-base-content/60">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10 mb-3 opacity-50" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+      </svg>
+      <p class="font-medium">Nenhum projecto criado ainda.</p>
+      <p class="text-sm">Os projectos criados aparecerão aqui.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock maincontent %}

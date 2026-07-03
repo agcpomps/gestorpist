@@ -1,5 +1,17 @@
-<div class="toast toast-top toast-center">
-  <div class="alert alert-success">
-    <span>Departamento criado com sucesso.</span>
+{# Resposta ao criar departamento: fecha o modal, actualiza o select e mostra toast. #}
+<div x-init="showModal = false"></div>
+
+<select name="department" id="id_department" class="select w-full" required hx-swap-oob="true">
+  <option value="">---------</option>
+  {% for dept in departments %}
+  <option value="{{ dept.id }}" {% if dept.id == new_department.id %}selected{% endif %}>{{ dept.name }}</option>
+  {% endfor %}
+</select>
+
+<div id="toast-area" hx-swap-oob="true">
+  <div class="toast toast-top toast-center z-50">
+    <div class="alert alert-success">
+      <span>Departamento “{{ new_department.name }}” criado com sucesso.</span>
+    </div>
   </div>
 </div>

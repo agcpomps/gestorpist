@@ -1,0 +1,44 @@
+{% load humanize %} 
+<table class="table table-xs">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Numero</th>
+        <th>Emissão</th>
+        <th>Termino</th>
+        <th>Classe</th>
+        <th>Empresa</th>
+        <th>Valor</th>
+        <th>Data de Pagamento</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for alvara in alvaras %}
+      <tr>
+        <th>{{alvara.id}}</th>
+        <td>{{alvara.numero}}</td>
+        <td>{{alvara.emissao}}</td>
+        <td>{{alvara.termino}}</td>
+        <td>{{alvara.classe}}</td>
+        <td>{{alvara.empresa}}</td>
+        <td>{{alvara.valor|intcomma}}</td>
+        <td>{{alvara.data_pagamento}}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="4">Nenhum alvará encontrado</td></tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th>Numero</th>
+        <th>Emissão</th>
+        <th>Termino</th>
+        <th>Classe</th>
+        <th>Empresa</th>
+        <th>Valor</th>
+        <th>Data de Pagamento</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>

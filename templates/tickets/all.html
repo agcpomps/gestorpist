@@ -1,79 +1,85 @@
-{% extends 'tickets/_layoutemp.html' %} 
+{% extends 'tickets/_layoutemp.html' %}
 
 {% block header %}
-<div class="flex justify-between items-center h-24">
-  <div class="flex items-center space-x-2">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke-width="1.5"
-      stroke="currentColor"
-      class="w-6 h-6"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-      />
-    </svg>
-
-    <form action="{% url 'empresas:search_empresa' %}" method="get">
-      <input
-        type="search"
-        name="q"
-        placeholder="procure..."
-        class="input w-full max-w-xs border-dashed border-b-2 border-primary"
-      />
-    </form>
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Tickets</h1>
+    <p class="text-base-content/60">Pedidos e ocorrências internas</p>
   </div>
-  <a href="{% url 'empresas:criar' %}" class="btn btn-primary text-white"
-    >+ Entre os dados</a
-  >
+  <div class="flex items-center gap-3">
+    <form method="get">
+      <label class="input input-sm w-48 sm:w-64">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-50" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input type="search" name="q" value="{{ query }}" placeholder="Procurar..." class="grow" />
+      </label>
+    </form>
+    <a href="{% url 'ticket:create_ticket' %}" class="btn btn-primary">+ Novo ticket</a>
+  </div>
 </div>
-{% endblock header %} 
+{% endblock header %}
 
 {% block maincontent %}
-<header>
-  <h1>title</h1>
-  <div class="overflow-x-auto">
-    <table class="table table-xs">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Ticket</th>
-          <th>Entrou</th>
-          <th>Usuário</th>
-          <th>Departamento</th>
-          <th>Prioridade</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for ticket in tickets %}
-        <tr>
-          <th>{{ticket.id}}</th>
-          <td>{{ticket.title}}</td>
-          <td>{{ticket.created_at}}</td>
-          <td>{{ticket.user}}</td>
-          <td>{{ticket.department}}</td>
-          <td>{{ticket.priority}}</td>
-          <td>{{ticket.status}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Ticket</th>
-          <th>Entrou</th>
-          <th>Usuário</th>
-          <th>Departamento</th>
-          <th>Prioridade</th>
-          <th>Estado</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</header>
+<div role="tablist" class="tabs tabs-border mb-4">
+  <a role="tab" href="{% url 'ticket:ticketall' %}{% if query %}?q={{ query }}{% endif %}"
+     class="tab {% if not status %}tab-active{% endif %}">Todos</a>
+  {% for code, label in status_choices %}
+  <a role="tab" href="{% url 'ticket:ticketall' %}?status={{ code }}{% if query %}&q={{ query }}{% endif %}"
+     class="tab {% if status == code %}tab-active{% endif %}">{{ label }}</a>
+  {% endfor %}
+</div>
+
+<div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+  <table class="table table-zebra table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Ticket</th>
+        <th>Descrição</th>
+        <th>Entrou</th>
+        <th>Usuário</th>
+        <th>Departamento</th>
+        <th>Prioridade</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ticket in tickets %}
+      <tr class="hover:bg-base-200/60 cursor-pointer" onclick="window.location='{% url 'ticket:detail' ticket.id %}'">
+        <th>{{ ticket.id }}</th>
+        <td class="font-medium"><a href="{% url 'ticket:detail' ticket.id %}" class="link link-hover">{{ ticket.title }}</a></td>
+        <td class="max-w-xs truncate text-base-content/70" title="{{ ticket.description }}">{{ ticket.description|truncatechars:80 }}</td>
+        <td class="whitespace-nowrap text-base-content/60">{{ ticket.created_at|date:"d/m/Y" }}</td>
+        <td>{{ ticket.user }}</td>
+        <td>{{ ticket.department }}</td>
+        <td>
+          <span class="badge badge-sm
+            {% if ticket.priority == 'U' %}badge-error
+            {% elif ticket.priority == 'A' %}badge-warning
+            {% elif ticket.priority == 'M' %}badge-info
+            {% else %}badge-ghost{% endif %}">
+            {{ ticket.get_priority_display }}
+          </span>
+        </td>
+        <td>
+          <span class="badge badge-sm
+            {% if ticket.status == 'R' %}badge-success
+            {% elif ticket.status == 'P' %}badge-primary
+            {% elif ticket.status == 'F' %}badge-ghost
+            {% else %}badge-warning{% endif %}">
+            {{ ticket.get_status_display }}
+          </span>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8" class="text-center text-base-content/60 py-8">
+          {% if query %}Nenhum ticket encontrado para "{{ query }}". <a href="{% url 'ticket:ticketall' %}" class="link link-primary">Limpar pesquisa</a>{% else %}Nenhum ticket registado.{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock maincontent %}

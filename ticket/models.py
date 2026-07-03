@@ -2,14 +2,6 @@ from django.db import models
 from django.conf import settings
 
 
-class Department(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Nome")
-    description = models.TextField(blank=True, verbose_name="Descrição")
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class Ticket(models.Model):
     class Priority(models.TextChoices):
         BAIXA = "B", "Baixa"
@@ -41,7 +33,7 @@ class Ticket(models.Model):
         related_name="assigned_tickets",
     )
     department = models.ForeignKey(
-        Department,
+        "accounts.Department",
         on_delete=models.CASCADE,
         related_name="department_tickets",
         verbose_name="Departamento",
@@ -59,8 +51,31 @@ class Ticket(models.Model):
         verbose_name="Estado",
     )
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self) -> str:
         return self.title
 
 
-# por implementar comentários ao ticket
+class TicketComment(models.Model):
+    ticket = models.ForeignKey(
+        Ticket,
+        on_delete=models.CASCADE,
+        related_name="comments",
+        verbose_name="Ticket",
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="ticket_comments",
+        verbose_name="Autor",
+    )
+    body = models.TextField(verbose_name="Comentário")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Criado")
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.author} — {self.ticket}"

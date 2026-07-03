@@ -1,0 +1,25 @@
+<tr id="row-{{ contribuinte.id }}">
+  <td>{{ contribuinte.id }}</td>
+  <td class="font-medium">{{ contribuinte.nome }}</td>
+  <td>{{ contribuinte.nif }}</td>
+  <td>{{ contribuinte.morada }} - {{ contribuinte.municipio }}</td>
+  <td class="text-right whitespace-nowrap">
+    <button
+      class="btn btn-sm btn-ghost text-warning"
+      hx-get="{% url 'gupagamentos:editar_contribuinte' contribuinte.id %}"
+      hx-target="#row-{{ contribuinte.id }}"
+      hx-swap="outerHTML"
+    >
+      Editar
+    </button>
+    <button
+      class="btn btn-sm btn-ghost text-error"
+      hx-delete="{% url 'gupagamentos:delete_contribuinte' contribuinte.id %}"
+      hx-confirm="Tem a certeza que deseja eliminar este contribuinte?"
+      hx-target="body"
+      hx-push-url="true"
+    >
+      Eliminar
+    </button>
+  </td>
+</tr>

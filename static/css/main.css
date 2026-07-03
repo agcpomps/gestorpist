@@ -1,4 +1,11 @@
 .main-container {
-  width: 960px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  padding-block: 1.5rem;
+}
+
+[x-cloak] {
+  display: none !important;
 }

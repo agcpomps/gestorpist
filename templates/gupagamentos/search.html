@@ -1,51 +1,58 @@
 {% extends 'gupagamentos/_layoutemp.html' %}
 
-
+{% block header %}
+<div class="flex flex-wrap justify-between items-center gap-4 py-6">
+  <div>
+    <h1 class="text-2xl font-semibold">Resultados da pesquisa</h1>
+    <p class="text-base-content/60">{{ taxas|length }} resultado{{ taxas|length|pluralize }} para "{{ query }}"</p>
+  </div>
+  <div class="flex items-center gap-3">
+    <form action="{% url 'gupagamentos:search_pagamentos' %}" method="get">
+      <label class="input input-sm w-48 sm:w-64">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-50" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input type="search" name="q" value="{{ query }}" placeholder="Procurar..." class="grow" />
+      </label>
+    </form>
+    <a href="{% url 'gupagamentos:taxas' %}" class="btn btn-ghost">← Voltar aos pagamentos</a>
+  </div>
+</div>
+{% endblock header %}
 
 {% block maincontent %}
-
-<header>
-  <h1>title</h1>
-  <div class="overflow-x-auto">
-    <table class="table table-xs">
-      <thead>
-        <tr>
-          <th></th>
-          <th>Contribuiente</th>
-          <th>Nº de Titulo</th>
-          <th>Localização</th>
-          <th>Valor de Contrato</th>
-          <th>Valor Pago</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for taxa in taxas %}
-        <tr>
-          <th>{{taxa.id}}</th>
-          <th>{{taxa.contribuinte}}</th>
-          <td>{{taxa.titulo}}</td>
-          <td>
-            {{taxa.contribuinte.morada}} - {{pagamento.contribuinte.municipio}}
-          </td>
-          <td>{{taxa.valor_contrato}}</td>
-          <td>{{taxa.valor_pago}}</td>
-          <td>{{taxa.data_pagamento}}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>Contribuiente</th>
-          <th>Nº de Titulo</th>
-          <th>Localização</th>
-          <th>Valor de Contrato</th>
-          <th>Valor Pago</th>
-          <th>Data</th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</header>
+<div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+  <table class="table table-zebra table-sm">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Contribuinte</th>
+        <th>Nº de Título</th>
+        <th>Localização</th>
+        <th>Valor de Contrato</th>
+        <th>Valor Pago</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for taxa in taxas %}
+      <tr>
+        <th>{{ taxa.id }}</th>
+        <td class="font-medium">{{ taxa.contribuinte }}</td>
+        <td>{{ taxa.titulo }}</td>
+        <td>{{ taxa.contribuinte.morada }} - {{ taxa.contribuinte.municipio }}</td>
+        <td>{{ taxa.valor_contrato }}</td>
+        <td>{{ taxa.valor_pago }}</td>
+        <td class="whitespace-nowrap">{{ taxa.data_pagamento|date:"d/m/Y" }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center text-base-content/60 py-8">
+          Nenhum resultado encontrado para "{{ query }}". <a href="{% url 'gupagamentos:taxas' %}" class="link link-primary">Voltar aos pagamentos</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock maincontent %}

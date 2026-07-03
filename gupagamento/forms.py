@@ -26,4 +26,4 @@ class TaxaForm(forms.ModelForm):
 class ContribuinteForm(forms.ModelForm):
     class Meta:
         model = Contribuinte
-        fields = "__all__"
+        exclude = ['criado_por']

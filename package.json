@@ -1,10 +1,11 @@
 {
   "scripts": {
-    "tailwind": "tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch"
+    "tailwind": "npx @tailwindcss/cli -i ./static/src/input.css -o ./static/src/output.css --watch"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.1.15",
     "@tailwindcss/forms": "^0.5.7",
-    "daisyui": "^4.0.3",
-    "tailwindcss": "^3.3.5"
+    "daisyui": "^5.3.7",
+    "tailwindcss": "^4.1.15"
   }
 }

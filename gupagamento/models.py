@@ -1,5 +1,6 @@
 from django.db import models
 from djmoney.models.fields import MoneyField
+from django.conf import settings
 
 
 class Contribuinte(models.Model):
@@ -7,6 +8,13 @@ class Contribuinte(models.Model):
     nif = models.CharField(max_length=14, null=True, blank=True)
     morada = models.CharField(max_length=300)
     municipio = models.CharField(max_length=250)
+    criado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="contribuientes_criados"
+    )
+
 
     def __str__(self) -> str:
         return self.nome
@@ -20,6 +28,13 @@ class Taxa(models.Model):
     contribuinte = models.ForeignKey(
         Contribuinte, on_delete=models.CASCADE, related_name="taxas_pagas"
     )
+    emitido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="taxas_emitidas"
+    )
+
 
     def __str__(self) -> str:
         if self.titulo:

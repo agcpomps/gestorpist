@@ -1,11 +1,11 @@
-{% extends 'empresas/_layoutemp.html' %} 
-{% load humanize %}
+{% extends 'empresas/_layoutemp.html' %}
+{% load money %}
 
 {% block header %}
 
 
 <h1 class="text-4xl font-semibold my-8">DOP estatística</h1>
-<div class="grid grid-cols-3 gap-2 ">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
   <div class="card bg-base-100 shadow-xl">
     <div class="card-body">
      <h2 class="text-center">Total Empresas</h2>
@@ -17,7 +17,7 @@
   <div class="card  bg-base-100 shadow-xl">
     <div class="card-body">
      <h2 class="text-center">Valor Total alvaras</h2>
-     <p class="font-bold text-6xl text-center">{{alvara_total_valor|intcomma}}</p>
+     <p class="font-bold text-4xl text-center">{{alvara_total_valor|kwanza}}</p>
     </div>
    
   </div>
@@ -31,6 +31,4 @@
   </div>
 
 </div>
-
-</div>
-{% endblock header %} 
+{% endblock header %}

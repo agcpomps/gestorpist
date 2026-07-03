@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Contribuinte(models.Model):
@@ -7,6 +8,13 @@ class Contribuinte(models.Model):
     morada = models.CharField(max_length=200, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     telefone = models.CharField(max_length=13, null=True, blank=True)
+    criado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="contribuites_criados"
+    )
+
 
     def __str__(self) -> str:
         return self.nome
@@ -27,6 +35,12 @@ class Licenca(models.Model):
     benificiario = models.CharField(max_length=100, default="GPIST")
     potencia = models.FloatField(null=True, blank=True)
     distincao = models.CharField(max_length=2, choices=Distincao.choices)
+    emitido_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="licencas_emitidas"
+    )
 
     def __str__(self) -> str:
         return f"Licença nº {self.numero} contribuiente {self.contribuinte}"

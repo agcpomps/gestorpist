@@ -1,4 +1,4 @@
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm, DateInput 
 
 
 from .models import Contribuinte, Licenca
@@ -12,7 +12,7 @@ class DateInput(DateInput):
 class ContribuinteForm(ModelForm):
     class Meta:
         model = Contribuinte
-        fields = "__all__"
+        exclude = ["criado_por"] 
 
 
 class LicencaForm(ModelForm):
@@ -28,5 +28,7 @@ class LicencaForm(ModelForm):
             "potencia",
             "distincao",
         ]
+        
+        exclude = ["emitido_por"]
 
         widgets = {"data_pagamento": DateInput()}
